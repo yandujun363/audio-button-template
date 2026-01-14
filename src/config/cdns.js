@@ -85,24 +85,24 @@
 
 export const CDN_CONFIGS = [
     // 示例1：Cloudflare CDN（主CDN）
-    {
-        id: 'cdn1',
-        name: '主CDN(Cloudflare)',
-        url: 'https://cdn.yangdujun.top/auido/3546775765912341/',
-        description: '主要CDN源，通过Cloudflare加载',
-        priority: 1  // 最高优先级
-    },
+    // {
+    //     id: 'cdn1',
+    //     name: '主CDN(Cloudflare)',
+    //     url: 'https://cdn.yangdujun.top/auido/3546775765912341/',
+    //     description: '主要CDN源，通过Cloudflare加载',
+    //     priority: 1  // 最高优先级
+    // },
     
     // 示例2：自建NAS CDN
-    {
-        id: 'cdn3',
-        name: 'NASCDN',
-        url: 'https://naslink.yangdujun.top/api/public/dl/2XO4OUh3/3546775765912341/',
-        description: '用NAS实现的CDN，容易炸，但是速度会快点',
-        priority: 3  // 低优先级
-    },
+    // {
+    //     id: 'cdn3',
+    //     name: 'NASCDN',
+    //     url: 'https://naslink.yangdujun.top/api/public/dl/2XO4OUh3/3546775765912341/',
+    //     description: '用NAS实现的CDN，容易炸，但是速度会快点',
+    //     priority: 3  // 低优先级
+    // },
     
-    // 示例3：本地模式配置（如需启用请取消注释）
+    // 示例3：本地模式配置
     // {
     //     id: 'local',
     //     name: '本地音频',
