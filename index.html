@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 页面标题 - 根据具体项目修改 {{title}} -->
+    <title>{{title}}</title>
+    <!-- 主样式表 -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- 网站图标 - 记得上传 favicon.jpg 或者指定到其它文件路径和格式 -->
+    <link rel="shortcut icon" href="favicon.jpg" type="image/jpeg">
+</head>
+
+<body>
+    <!-- ==================== CDN选择界面 ==================== -->
+    <!-- 
+        功能：当有多个CDN配置时显示，让用户选择音频源
+        显示条件：CDN_CONFIGS.length > 1 且没有保存的CDN选择
+        隐藏条件：本地模式或单CDN模式会自动跳过此界面
+    -->
+    <div id="cdnSelectScreen" class="cdn-select-screen" style="display: none;">
+        <div class="cdn-select-content">
+            <div class="cdn-select-header">
+                <h2>选择音频源</h2>
+                <p class="cdn-select-desc">请选择一个音频加载源以开始使用</p>
+            </div>
+            
+            <!-- CDN选项容器 - 由JavaScript动态填充 -->
+            <div class="cdn-options-container" id="cdnOptions">
+                <!-- 
+                    动态内容说明：
+                    每个CDN选项会生成以下结构：
+                    <div class="cdn-option" data-cdn-id="cdn1">
+                        <div class="cdn-option-header">
+                            <h3>主CDN(Cloudflare)</h3>
+                            <span class="cdn-priority">优先级: 1</span>
+                        </div>
+                        <div class="cdn-option-url">https://cdn.example.com/</div>
+                        <div class="cdn-option-desc">描述信息</div>
+                    </div>
+                -->
+            </div>
+            
+            <div class="cdn-select-footer">
+                <p class="cdn-note">选择后会开始加载音频资源，首次加载可能需要时间</p>
+                <div class="cdn-storage-info">
+                    <!-- 记住选择复选框 - 勾选后会将CDN选择保存到IndexedDB -->
+                    <input type="checkbox" id="rememberCdn" checked>
+                    <label for="rememberCdn">记住我的选择（使用浏览器本地存储）</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 加载界面 ==================== -->
+    <!-- 
+        功能：显示音频加载进度
+        显示时机：用户选择CDN后，或单CDN/本地模式初始化时
+        隐藏时机：所有音频预加载完成后
+    -->
+    <div id="loadingScreen" class="loading-screen" style="display: none;">
+        <div class="loading-content">
+            <!-- 加载动画 -->
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在加载音频资源...</div>
+            <div class="loading-progress">
+                <!-- 进度条容器 -->
+                <div class="progress-bar">
+                    <!-- 进度条填充部分 - 宽度由JavaScript控制 -->
+                    <div class="progress-fill" id="loadingProgress"></div>
+                </div>
+                <!-- 进度文本 - 格式：已加载/总数 -->
+                <div class="progress-text" id="loadingProgressText">0/0</div>
+            </div>
+            <div class="loading-note">首次加载可能需要时间，音频会缓存在您的浏览器中</div>
+            <!-- CDN信息显示 - 显示当前使用的CDN名称 -->
+            <div class="loading-cdn-info" id="loadingCdnInfo"></div>
+        </div>
+    </div>
+
+    <!-- ==================== 主界面 ==================== -->
+    <!-- 
+        功能：音频播放主界面
+        显示时机：音频加载完成后
+        初始状态：隐藏，由JavaScript控制显示
+    -->
+    <div id="mainContent" class="main-content" style="display: none;">
+        <!-- 页面头部 -->
+        <header>
+            <!-- 标题 - 根据具体项目修改 {{title}} -->
+            <h1>{{title}}</h1>
+            <!-- 
+                注意：原项目有多语言切换功能，但当前版本已移除
+                如果需要恢复，可以添加语言切换按钮：
+                <div class="language-switch">
+                    <button class="active">中文</button>
+                    <button>English</button>
+                </div>
+            -->
+        </header>
+
+        <!-- 控制面板 -->
+        <div class="controls">
+            <!-- 随机播放按钮 -->
+            <button id="randomPlay">随机播放</button>
+            <!-- 停止所有按钮 -->
+            <button id="stopAll">停止所有</button>
+            <!-- 洗脑循环复选框 -->
+            <label>
+                <input type="checkbox" id="loopMode"> 洗脑循环
+            </label>
+            <!-- CDN切换按钮 - 仅在多个CDN时显示 -->
+            <button id="changeCdn" class="cdn-change-btn">更换音频源</button>
+        </div>
+
+        <!-- 音频按钮主容器 -->
+        <main id="voiceContainer">
+            <!-- 
+                动态内容说明：
+                音频按钮由JavaScript动态生成，结构如下：
+                <div class="voice-category">
+                    <h2>分类标题</h2>
+                    <div class="voice-buttons">
+                        <div class="haruka-button" data-path="audio/01.mp3">
+                            <button>音频名称</button>
+                        </div>
+                        更多音频按钮...
+                    </div>
+                </div>
+                更多分类...
+            -->
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <!-- 项目信息部分 -->
+                <div class="footer-section">
+                    <p class="footer-text">
+                        基于 <a href="https://github.com/CaoMeiYouRen/shirakami-haruka-button" target="_blank"
+                            rel="noopener noreferrer">CaoMeiYouRen/shirakami-haruka-button</a> 制作
+                        <span class="footer-note">（参考代码让AI重新写的纯原生版本，原项目炸了，用不了）</span>
+                    </p>
+                </div>
+
+                <!-- 使用指南部分 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">使用指南</h3>
+                    <ul class="guide-list">
+                        <li>点击按钮即可播放对应音声</li>
+                        <li>多次点击可以造成相当鬼畜的效果</li>
+                        <li>开启洗脑循环将会一直播放一个音频</li>
+                        <li>同时开启循环播放和洗脑循环将会出现 <strong>地 狱 绘 卷</strong></li>
+                    </ul>
+                </div>
+
+                <!-- 相关链接部分 -->
+                <div class="footer-section">
+                    <h3 class="footer-title">相关链接</h3>
+                    <!-- 主播空间链接 - 根据具体项目修改 {{href}} -->
+                    <a href="{{href}}" target="_blank" rel="noopener noreferrer"
+                        class="footer-link">
+                        主播空间
+                    </a>
+                    <!-- 项目地址链接 -->
+                    <a href="https://github.com/yandujun363/mai-button" target="_blank" rel="noopener noreferrer"
+                        class="footer-link">
+                        项目地址
+                    </a>
+                </div>
+            </div>
+
+            <!-- 版权信息 -->
+            <div class="footer-bottom">
+                <!-- 版权信息 - 根据具体项目修改 {{copyright}} -->
+                <p class="copyright">{{copyright}}</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================== JavaScript ==================== -->
+    <!-- 
+        使用ES模块加载方式
+        注意：需要现代浏览器支持
+        功能：应用主逻辑，包括CDN选择、音频加载、播放控制等
+    -->
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

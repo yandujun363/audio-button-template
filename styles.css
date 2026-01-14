@@ -1,0 +1,692 @@
+/* ==================== CSS变量定义 ==================== */
+/* 
+   说明：使用CSS变量便于主题定制和统一管理
+   修改这些变量可以快速改变整个应用的外观
+*/
+:root {
+    /* 主色调 - 按钮、高亮、进度条等使用 */
+    --primary-color: #7aacdd;        /* 主色调（蓝色） */
+    --primary-light: #7aacdd2b;      /* 主色调浅色（带透明度） */
+    --primary-dark: #7aacdd;         /* 主色调深色（当前与主色相同） */
+
+    /* 中性色 - 背景、文字、边框等 */
+    --bg-color: #f5f5f5;             /* 页面背景色 */
+    --card-bg: #ffffff;              /* 卡片背景色 */
+    --text-primary: #333333;         /* 主要文字颜色 */
+    --text-secondary: #666666;       /* 次要文字颜色 */
+    --border-color: #dddddd;         /* 边框颜色 */
+
+    /* 尺寸变量 - 统一管理间距和圆角 */
+    --border-radius: 8px;            /* 通用圆角 */
+    --button-radius: 4px;            /* 按钮圆角 */
+    --voice-button-radius: 20px;     /* 音频按钮特殊圆角 */
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+    --spacing-sm: 8px;               /* 小间距 */
+    --spacing-md: 15px;              /* 中间距 */
+    --spacing-lg: 20px;              /* 大间距 */
+    --spacing-xl: 30px;              /* 特大间距 */
+
+    /* 过渡动画 - 统一管理动画速度 */
+    --transition-speed: 0.3s;        /* 标准过渡速度 */
+    --transition-fast: 0.2s;         /* 快速过渡 */
+}
+
+/* ==================== 基础重置 ==================== */
+* {
+    box-sizing: border-box;          /* 盒模型设置为border-box */
+    margin: 0;
+    padding: 0;
+    /* 主要字体栈 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /* 禁止文本选择 - 防止用户选择文字干扰点击 */
+    user-select: none;               /* 标准属性 */
+    -webkit-user-select: none;       /* Safari/Chrome兼容 */
+    -moz-user-select: none;          /* Firefox兼容 */
+    -ms-user-select: none;           /* IE/Edge兼容 */
+}
+
+/* ==================== 页面基础样式 ==================== */
+body {
+    background-color: var(--bg-color);
+    padding: var(--spacing-lg);
+    max-width: 1200px;               /* 最大宽度限制 */
+    margin: 0 auto;                  /* 居中显示 */
+    color: var(--text-primary);
+    line-height: 1.6;                /* 行高设置 */
+}
+
+/* ==================== 头部样式 ==================== */
+header {
+    display: flex;
+    justify-content: space-between;  /* 左右分布 */
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color); /* 底部边框 */
+}
+
+header h1 {
+    color: var(--primary-color);
+    font-weight: 600;
+    letter-spacing: 0.5px;          /* 字间距 */
+}
+
+/* 语言切换按钮（当前未使用） */
+.language-switch button {
+    margin-left: var(--spacing-md);
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: var(--card-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--button-radius);
+    color: var(--primary-color);
+    transition: all var(--transition-speed);
+}
+
+/* ==================== 控制面板样式 ==================== */
+.controls {
+    background-color: var(--card-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;                /* 允许换行 */
+    align-items: center;
+    gap: var(--spacing-md);         /* 元素间距 */
+}
+
+.controls button {
+    padding: 9px 18px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--button-radius);
+    transition: background-color var(--transition-speed);
+    font-weight: 500;
+}
+
+.controls button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);    /* 悬停上移效果 */
+}
+
+/* 复选框标签样式 */
+.controls label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.controls input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-color); /* 自定义复选框颜色 */
+}
+
+/* ==================== 音频分类样式 ==================== */
+.voice-category {
+    margin-bottom: var(--spacing-xl);
+    background-color: var(--card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.voice-category h2 {
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary-color); /* 分类标题下划线 */
+    font-weight: 600;
+}
+
+/* 音频按钮容器 */
+.voice-buttons {
+    display: flex;
+    flex-wrap: wrap;                /* 允许按钮换行 */
+    gap: var(--spacing-md);         /* 按钮间距 */
+}
+
+/* ==================== 单个音频按钮样式 ==================== */
+.haruka-button {
+    position: relative;              /* 为进度条定位做准备 */
+    transition: transform var(--transition-fast);
+}
+
+.haruka-button:hover {
+    transform: translateY(-2px);    /* 悬停上浮效果 */
+}
+
+.haruka-button button {
+    padding: 12px 20px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--voice-button-radius); /* 特殊圆角 */
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 120px;               /* 最小宽度 */
+    white-space: nowrap;            /* 不换行 */
+    overflow: hidden;               /* 溢出隐藏 */
+    text-overflow: ellipsis;        /* 超出显示省略号 */
+    font-weight: 500;
+}
+
+.haruka-button button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 8px rgba(66, 185, 131, 0.3);
+}
+
+/* ==================== 音频播放进度条样式 ==================== */
+/* 
+   说明：播放音频时在按钮上显示的进度条
+   由JavaScript控制宽度变化
+*/
+.process-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--primary-light);
+    border-radius: calc(var(--voice-button-radius) - 2px); /* 适配按钮圆角 */
+    pointer-events: none;           /* 不干扰按钮点击 */
+    width: 0;                       /* 初始宽度为0 */
+}
+
+/* ==================== 工具提示样式 ==================== */
+/* 
+   说明：当音频名称过长时显示完整名称
+   悬停时显示工具提示
+*/
+.tooltip {
+    position: relative;              /* 为工具提示定位 */
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;              /* 默认隐藏 */
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 10;                    /* 确保在最上层 */
+    bottom: 125%;                   /* 显示在按钮上方 */
+    left: 50%;
+    margin-left: -100px;            /* 居中显示 */
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+    font-size: 0.9rem;
+}
+
+/* 工具提示的三角箭头 */
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* 悬停时显示工具提示 */
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ==================== 页脚样式 ==================== */
+.app-footer {
+    margin-top: 40px;
+    padding: 25px 0 20px;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    color: var(--text-secondary);
+    font-size: 0.9rem;              /* 页脚字体稍小 */
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: grid;
+    /* 响应式网格布局 */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.footer-section {
+    line-height: 1.6;
+}
+
+/* 页脚链接样式 */
+.footer-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.footer-note {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85rem;
+    color: #888;
+    font-style: italic;             /* 斜体强调 */
+}
+
+/* 页脚标题样式 */
+.footer-title {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+/* 标题下划线装饰 */
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+/* 指南列表样式 */
+.guide-list {
+    list-style-type: none;          /* 移除默认列表符号 */
+    padding-left: 0;
+}
+
+.guide-list li {
+    margin-bottom: 8px;
+    padding-left: 20px;             /* 为自定义符号留空间 */
+    position: relative;
+}
+
+/* 自定义列表符号 */
+.guide-list li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-size: 0.8rem;
+}
+
+.guide-list li strong {
+    color: #e74c3c;                 /* 强调文字使用红色 */
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* 页脚按钮链接 */
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: var(--button-radius);
+    transition: all var(--transition-fast);
+    border: 1px solid transparent;
+}
+
+.footer-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);    /* 悬停上浮效果 */
+    box-shadow: 0 4px 8px rgba(122, 172, 221, 0.3);
+}
+
+/* 页脚底部版权区域 */
+.footer-bottom {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.copyright {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+/* ==================== 加载界面样式 ==================== */
+.loading-screen {
+    position: fixed;                /* 固定定位覆盖整个屏幕 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;                  /* 确保在最上层 */
+}
+
+.loading-content {
+    text-align: center;
+    max-width: 400px;
+    padding: var(--spacing-xl);
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+/* 加载动画 */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--primary-light);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    margin: 0 auto var(--spacing-lg);
+    animation: spin 1s linear infinite; /* 旋转动画 */
+}
+
+/* 旋转动画定义 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+/* 进度条容器 */
+.loading-progress {
+    margin-bottom: var(--spacing-lg);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: var(--primary-light);
+    border-radius: 5px;
+    overflow: hidden;               /* 隐藏溢出的部分 */
+    margin-bottom: var(--spacing-sm);
+}
+
+/* 进度条填充部分 */
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    transition: width 0.3s ease;    /* 宽度变化过渡 */
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.loading-note {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* 主内容淡入动画 */
+.main-content {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ==================== CDN选择界面样式 ==================== */
+.cdn-select-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;                  /* 比加载界面更高 */
+}
+
+.cdn-select-content {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;               /* 最大高度限制 */
+    overflow-y: auto;               /* 内容过多时可滚动 */
+    padding: var(--spacing-xl);
+}
+
+.cdn-select-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.cdn-select-header h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.cdn-select-desc {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* CDN选项网格布局 */
+.cdn-options-container {
+    display: grid;
+    /* 响应式网格，最小250px，自动填充 */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* 单个CDN选项卡片 */
+.cdn-option {
+    background-color: var(--primary-light);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.cdn-option:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);    /* 悬停上浮效果 */
+    box-shadow: 0 4px 12px rgba(122, 172, 221, 0.2);
+}
+
+.cdn-option-header {
+    display: flex;
+    justify-content: space-between; /* 标题和优先级左右分布 */
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.cdn-option-header h3 {
+    color: var(--primary-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* 优先级标签 */
+.cdn-priority {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* CDN URL显示样式 */
+.cdn-option-url {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-family: monospace;         /* 等宽字体显示URL */
+    word-break: break-all;          /* 允许URL换行 */
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+.cdn-option-desc {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.cdn-select-footer {
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.cdn-note {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-md);
+}
+
+/* 记住选择复选框区域 */
+.cdn-storage-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.cdn-storage-info input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-color);
+}
+
+.cdn-storage-info label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+/* 加载界面中的CDN信息显示 */
+.loading-cdn-info {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background-color: var(--primary-light);
+    border-radius: var(--button-radius);
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* 主界面中的CDN切换按钮 */
+.cdn-change-btn {
+    padding: 9px 18px;
+    cursor: pointer;
+    background-color: transparent;   /* 透明背景 */
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color); /* 边框样式 */
+    border-radius: var(--button-radius);
+    transition: all var(--transition-speed);
+    font-weight: 500;
+}
+
+.cdn-change-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* ==================== 响应式设计 ==================== */
+/* 
+   说明：针对不同屏幕尺寸的适配
+*/
+
+/* 中等屏幕（平板） */
+@media (max-width: 768px) {
+    .cdn-options-container {
+        grid-template-columns: 1fr; /* 单列布局 */
+    }
+    
+    .cdn-select-content {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+    
+    /* 页脚响应式 */
+    .footer-content {
+        grid-template-columns: 1fr; /* 页脚单列布局 */
+        gap: var(--spacing-lg);
+    }
+    
+    .footer-section {
+        padding-bottom: var(--spacing-lg);
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .footer-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+}
+
+/* 小屏幕（手机） */
+@media (max-width: 480px) {
+    .cdn-select-content {
+        padding: var(--spacing-md);
+    }
+    
+    .cdn-option-header {
+        flex-direction: column;     /* 垂直排列 */
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+    
+    /* 页脚响应式 */
+    .app-footer {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+    
+    .footer-content {
+        padding: 0;
+    }
+    
+    .footer-link {
+        width: 100%;                /* 链接全宽显示 */
+        justify-content: center;
+    }
+}
